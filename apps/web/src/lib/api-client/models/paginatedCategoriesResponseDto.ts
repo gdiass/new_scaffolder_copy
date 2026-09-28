@@ -5,8 +5,8 @@
  * API REST do AppStart - Especificação OpenAPI 3.0
  * OpenAPI spec version: 1.0.0
  */
-import type { PaginationMetaDto } from './paginationMetaDto';
 import type { CategoryDto } from './categoryDto';
+import type { PaginationMetaDto } from './paginationMetaDto';
 
 export interface PaginatedCategoriesResponseDto {
   /** Lista de categorias paginadas */

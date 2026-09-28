@@ -1177,6 +1177,362 @@
           "tasks"
         ]
       }
+    },
+    "/api/v1/categories": {
+      "post": {
+        "description": "Cria uma nova categoria associando-a ao usuário autenticado como proprietário.",
+        "operationId": "CategoriesController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Categoria criada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autenticado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetailsDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Criar nova categoria",
+        "tags": [
+          "categories"
+        ]
+      },
+      "get": {
+        "description": "Lista categorias com paginação, busca por texto, filtro por status/prioridade e ordenação.",
+        "operationId": "CategoriesController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Número da página",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "description": "Itens por página",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Termo de busca",
+            "schema": {
+              "maxLength": 120,
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Campo de ordenação",
+            "schema": {
+              "default": "createdAt",
+              "type": "string",
+              "enum": [
+                "createdAt",
+                "title"
+              ]
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "description": "Direção da ordenação",
+            "schema": {
+              "default": "desc",
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista paginada de categorias",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedCategoriesResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autenticado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetailsDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Listar categorias paginadas",
+        "tags": [
+          "categories"
+        ]
+      }
+    },
+    "/api/v1/categories/{id}": {
+      "get": {
+        "description": "Retorna os detalhes de uma categoria específica pertencente ao usuário (ou qualquer categoria para ADMIN).",
+        "operationId": "CategoriesController_findById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados da categoria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autenticado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetailsDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acesso negado (categoria de outro proprietário)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetailsDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Categoria não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetailsDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Obter detalhes de uma categoria",
+        "tags": [
+          "categories"
+        ]
+      },
+      "put": {
+        "description": "Atualiza os dados ou status de uma categoria respeitando as regras de negócio e ownership.",
+        "operationId": "CategoriesController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Categoria atualizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos ou alteração inválida em categoria concluída",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetailsDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autenticado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetailsDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acesso negado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetailsDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Categoria não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetailsDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Atualizar categoria",
+        "tags": [
+          "categories"
+        ]
+      },
+      "delete": {
+        "description": "Realiza a remoção lógica (soft delete) da categoria.",
+        "operationId": "CategoriesController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Categoria excluída com sucesso"
+          },
+          "401": {
+            "description": "Não autenticado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetailsDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acesso negado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetailsDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Categoria não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetailsDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Excluir categoria (remoção lógica)",
+        "tags": [
+          "categories"
+        ]
+      }
     }
   },
   "info": {
@@ -1689,6 +2045,142 @@
           "dueDate": {
             "type": "string",
             "description": "Data de entrega limite (ISO 8601)"
+          }
+        }
+      },
+      "CreateCategoryDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Título da categoria",
+            "example": "Infraestrutura",
+            "minLength": 3,
+            "maxLength": 150
+          },
+          "description": {
+            "type": "string",
+            "description": "Descrição detalhada da categoria",
+            "example": "Recursos de infraestrutura da aplicação.",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "title"
+        ]
+      },
+      "CategoryOwnerDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identificador único do proprietário",
+            "example": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome do proprietário",
+            "example": "Ada Lovelace"
+          },
+          "email": {
+            "type": "string",
+            "description": "E-mail do proprietário",
+            "example": "ada@example.com"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email"
+        ]
+      },
+      "CategoryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identificador único da categoria",
+            "example": "b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22"
+          },
+          "title": {
+            "type": "string",
+            "description": "Título da categoria",
+            "example": "Infraestrutura"
+          },
+          "description": {
+            "type": "object",
+            "description": "Descrição da categoria",
+            "nullable": true
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "Identificador do usuário proprietário",
+            "example": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+          },
+          "owner": {
+            "description": "Dados resumidos do proprietário",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CategoryOwnerDto"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Data de criação"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Data de última atualização"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "ownerId",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "PaginatedCategoriesResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Lista de categorias paginadas",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryDto"
+            }
+          },
+          "meta": {
+            "description": "Metadados de paginação",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationMetaDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ]
+      },
+      "UpdateCategoryDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Título da categoria",
+            "example": "Infraestrutura",
+            "minLength": 3,
+            "maxLength": 150
+          },
+          "description": {
+            "type": "string",
+            "description": "Descrição detalhada da categoria",
+            "example": "Recursos de infraestrutura da aplicação.",
+            "maxLength": 1000
           }
         }
       }

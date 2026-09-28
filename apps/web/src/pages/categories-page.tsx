@@ -317,22 +317,6 @@ export function CategoriesPage() {
                       {/* Action buttons */}
                       <div className="flex items-center gap-1.5">
                         <Button
-                            size="sm"
-                            variant="ghost"
-                            className="h-8 px-2 text-amber-600 hover:text-amber-700 hover:bg-amber-50 dark:hover:bg-amber-950/30"
-                            title="Reabrir Tarefa"
-                            isLoading={updateMutation.isPending && updateMutation.variables?.id === category.id}
-                            onClick={() =>
-                              updateMutation.mutate({
-                                id: category.id,
-                                data: { },
-                              })
-                            }
-                          >
-                            <RotateCcw className="h-3.5 w-3.5 mr-1" />
-                            <span className="text-xs">Reabrir</span>
-                        </Button>
-                        <Button
                           size="sm"
                           variant="ghost"
                           className="h-8 w-8 p-0"
@@ -341,7 +325,6 @@ export function CategoriesPage() {
                         >
                           <Edit2 className="h-3.5 w-3.5 text-slate-500" />
                         </Button>
-
                         <Button
                           size="sm"
                           variant="ghost"
@@ -543,14 +526,6 @@ function EditCategoryModal({
               {...register('description')}
               className="flex w-full rounded-md border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                Status
-              </label>
-            </div>
           </div>
 
           <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">

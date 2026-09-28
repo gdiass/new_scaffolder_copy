@@ -11,6 +11,5 @@ export type CategoriesControllerFindAllSortBy = typeof CategoriesControllerFindA
 
 export const CategoriesControllerFindAllSortBy = {
   createdAt: 'createdAt',
-  dueDate: 'dueDate',
   title: 'title',
 } as const;

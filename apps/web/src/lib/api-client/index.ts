@@ -9,23 +9,23 @@ import type {
   AuthControllerCallbackParams,
   AuthControllerLoginParams,
   AuthMeResponseDto,
-  CreateTaskDto,
+  CategoriesControllerFindAllParams,
+  CategoryDto,
   CreateCategoryDto,
+  CreateTaskDto,
   CreateUserDto,
   LoginRequestDto,
   ManagedUserDto,
-  PaginatedTasksResponseDto,
   PaginatedCategoriesResponseDto,
+  PaginatedTasksResponseDto,
   PaginatedUsersResponseDto,
   ProblemDetailsDto,
   SetUserStatusDto,
   TaskDto,
   TasksControllerFindAllParams,
-  CategoryDto,
-  CategoriesControllerFindAllParams,
+  UpdateCategoryDto,
   UpdateSelfUserDto,
   UpdateTaskDto,
-  UpdateCategoryDto,
   UpdateUserDto,
   UserControllerListParams
 } from './models';
@@ -1098,15 +1098,9 @@ export const tasksControllerRemove = async (id: string, options?: Parameters<typ
 
 
 
-
 export type categoriesControllerCreateResponse201 = {
   data: CategoryDto
   status: 201
-}
-
-export type categoriesControllerCreateResponse400 = {
-  data: ProblemDetailsDto
-  status: 400
 }
 
 export type categoriesControllerCreateResponse401 = {
@@ -1117,13 +1111,13 @@ export type categoriesControllerCreateResponse401 = {
 export type categoriesControllerCreateResponseSuccess = (categoriesControllerCreateResponse201) & {
   headers: Headers;
 };
-export type categoriesControllerCreateResponseError = (categoriesControllerCreateResponse400 | categoriesControllerCreateResponse401) & {
+export type categoriesControllerCreateResponseError = (categoriesControllerCreateResponse401) & {
   headers: Headers;
 };
 
 export type categoriesControllerCreateResponse = (categoriesControllerCreateResponseSuccess | categoriesControllerCreateResponseError)
 
-export const getCategorysControllerCreateUrl = () => {
+export const getCategoriesControllerCreateUrl = () => {
 
 
 
@@ -1143,7 +1137,7 @@ export const categoriesControllerCreate = async (createCategoryDto: CreateCatego
     if (Array.isArray(h)) return Object.fromEntries(h);
     return h;
   };
-return customFetch<categoriesControllerCreateResponse>(getCategorysControllerCreateUrl(),
+return customFetch<categoriesControllerCreateResponse>(getCategoriesControllerCreateUrl(),
   {
     ...options,
     method: 'POST',
@@ -1173,7 +1167,7 @@ export type categoriesControllerFindAllResponseError = (categoriesControllerFind
 
 export type categoriesControllerFindAllResponse = (categoriesControllerFindAllResponseSuccess | categoriesControllerFindAllResponseError)
 
-export const getCategorysControllerFindAllUrl = (params?: CategoriesControllerFindAllParams,) => {
+export const getCategoriesControllerFindAllUrl = (params?: CategoriesControllerFindAllParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -1194,7 +1188,7 @@ export const getCategorysControllerFindAllUrl = (params?: CategoriesControllerFi
  */
 export const categoriesControllerFindAll = async (params?: CategoriesControllerFindAllParams, options?: Parameters<typeof customFetch>[1]): Promise<categoriesControllerFindAllResponse> => {
 
-  return customFetch<categoriesControllerFindAllResponse>(getCategorysControllerFindAllUrl(params),
+  return customFetch<categoriesControllerFindAllResponse>(getCategoriesControllerFindAllUrl(params),
   {
     ...options,
     method: 'GET'
@@ -1234,7 +1228,11 @@ export type categoriesControllerFindByIdResponseError = (categoriesControllerFin
 
 export type categoriesControllerFindByIdResponse = (categoriesControllerFindByIdResponseSuccess | categoriesControllerFindByIdResponseError)
 
-export const getCategorysControllerFindByIdUrl = (id: string,) => {
+export const getCategoriesControllerFindByIdUrl = (id: string,) => {
+
+
+
+
   return `/api/v1/categories/${id}`
 }
 
@@ -1244,7 +1242,7 @@ export const getCategorysControllerFindByIdUrl = (id: string,) => {
  */
 export const categoriesControllerFindById = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<categoriesControllerFindByIdResponse> => {
 
-  return customFetch<categoriesControllerFindByIdResponse>(getCategorysControllerFindByIdUrl(id),
+  return customFetch<categoriesControllerFindByIdResponse>(getCategoriesControllerFindByIdUrl(id),
   {
     ...options,
     method: 'GET'
@@ -1289,7 +1287,7 @@ export type categoriesControllerUpdateResponseError = (categoriesControllerUpdat
 
 export type categoriesControllerUpdateResponse = (categoriesControllerUpdateResponseSuccess | categoriesControllerUpdateResponseError)
 
-export const getCategorysControllerUpdateUrl = (id: string,) => {
+export const getCategoriesControllerUpdateUrl = (id: string,) => {
 
 
 
@@ -1310,7 +1308,7 @@ export const categoriesControllerUpdate = async (id: string,
     if (Array.isArray(h)) return Object.fromEntries(h);
     return h;
   };
-return customFetch<categoriesControllerUpdateResponse>(getCategorysControllerUpdateUrl(id),
+return customFetch<categoriesControllerUpdateResponse>(getCategoriesControllerUpdateUrl(id),
   {
     ...options,
     method: 'PUT',
@@ -1350,7 +1348,7 @@ export type categoriesControllerRemoveResponseError = (categoriesControllerRemov
 
 export type categoriesControllerRemoveResponse = (categoriesControllerRemoveResponseSuccess | categoriesControllerRemoveResponseError)
 
-export const getCategorysControllerRemoveUrl = (id: string,) => {
+export const getCategoriesControllerRemoveUrl = (id: string,) => {
 
 
 
@@ -1364,9 +1362,14 @@ export const getCategorysControllerRemoveUrl = (id: string,) => {
  */
 export const categoriesControllerRemove = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<categoriesControllerRemoveResponse> => {
 
-  return customFetch<categoriesControllerRemoveResponse>(getCategorysControllerRemoveUrl(id),
+  return customFetch<categoriesControllerRemoveResponse>(getCategoriesControllerRemoveUrl(id),
   {
     ...options,
     method: 'DELETE'
+
+
   }
 );}
+
+
+

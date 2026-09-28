@@ -9,10 +9,11 @@ import { RequestIdMiddleware } from './common/observability/request-id.middlewar
 import { HealthController } from './health/health.controller';
 import { PrismaModule } from './prisma/prisma.module';
 import { TasksModule } from './tasks/tasks.module';
+import { CategoriesModule } from './categories/categories.module';
 import { UserModule } from './users/user.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, AccessControlModule, UserModule, TasksModule],
+  imports: [PrismaModule, AuthModule, AccessControlModule, UserModule, TasksModule, CategoriesModule],
   controllers: [HealthController],
   providers: [
     ErrorMonitoringService,
