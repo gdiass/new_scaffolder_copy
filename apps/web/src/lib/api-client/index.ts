@@ -10,17 +10,22 @@ import type {
   AuthControllerLoginParams,
   AuthMeResponseDto,
   CreateTaskDto,
+  CreateCategoryDto,
   CreateUserDto,
   LoginRequestDto,
   ManagedUserDto,
   PaginatedTasksResponseDto,
+  PaginatedCategoriesResponseDto,
   PaginatedUsersResponseDto,
   ProblemDetailsDto,
   SetUserStatusDto,
   TaskDto,
   TasksControllerFindAllParams,
+  CategoryDto,
+  CategoriesControllerFindAllParams,
   UpdateSelfUserDto,
   UpdateTaskDto,
+  UpdateCategoryDto,
   UpdateUserDto,
   UserControllerListParams
 } from './models';
@@ -1093,3 +1098,275 @@ export const tasksControllerRemove = async (id: string, options?: Parameters<typ
 
 
 
+
+export type categoriesControllerCreateResponse201 = {
+  data: CategoryDto
+  status: 201
+}
+
+export type categoriesControllerCreateResponse400 = {
+  data: ProblemDetailsDto
+  status: 400
+}
+
+export type categoriesControllerCreateResponse401 = {
+  data: ProblemDetailsDto
+  status: 401
+}
+
+export type categoriesControllerCreateResponseSuccess = (categoriesControllerCreateResponse201) & {
+  headers: Headers;
+};
+export type categoriesControllerCreateResponseError = (categoriesControllerCreateResponse400 | categoriesControllerCreateResponse401) & {
+  headers: Headers;
+};
+
+export type categoriesControllerCreateResponse = (categoriesControllerCreateResponseSuccess | categoriesControllerCreateResponseError)
+
+export const getCategorysControllerCreateUrl = () => {
+
+
+
+
+  return `/api/v1/categories`
+}
+
+/**
+ * Cria uma nova categoria associando-a ao usuário autenticado como proprietário.
+ * @summary Criar nova categoria
+ */
+export const categoriesControllerCreate = async (createCategoryDto: CreateCategoryDto, options?: Parameters<typeof customFetch>[1]): Promise<categoriesControllerCreateResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
+return customFetch<categoriesControllerCreateResponse>(getCategorysControllerCreateUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(createCategoryDto)
+  }
+);}
+
+
+
+export type categoriesControllerFindAllResponse200 = {
+  data: PaginatedCategoriesResponseDto
+  status: 200
+}
+
+export type categoriesControllerFindAllResponse401 = {
+  data: ProblemDetailsDto
+  status: 401
+}
+
+export type categoriesControllerFindAllResponseSuccess = (categoriesControllerFindAllResponse200) & {
+  headers: Headers;
+};
+export type categoriesControllerFindAllResponseError = (categoriesControllerFindAllResponse401) & {
+  headers: Headers;
+};
+
+export type categoriesControllerFindAllResponse = (categoriesControllerFindAllResponseSuccess | categoriesControllerFindAllResponseError)
+
+export const getCategorysControllerFindAllUrl = (params?: CategoriesControllerFindAllParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/categories?${stringifiedParams}` : `/api/v1/categories`
+}
+
+/**
+ * Lista categorias com paginação, busca por texto, filtro por status/prioridade e ordenação.
+ * @summary Listar categorias paginadas
+ */
+export const categoriesControllerFindAll = async (params?: CategoriesControllerFindAllParams, options?: Parameters<typeof customFetch>[1]): Promise<categoriesControllerFindAllResponse> => {
+
+  return customFetch<categoriesControllerFindAllResponse>(getCategorysControllerFindAllUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+export type categoriesControllerFindByIdResponse200 = {
+  data: CategoryDto
+  status: 200
+}
+
+export type categoriesControllerFindByIdResponse401 = {
+  data: ProblemDetailsDto
+  status: 401
+}
+
+export type categoriesControllerFindByIdResponse403 = {
+  data: ProblemDetailsDto
+  status: 403
+}
+
+export type categoriesControllerFindByIdResponse404 = {
+  data: ProblemDetailsDto
+  status: 404
+}
+
+export type categoriesControllerFindByIdResponseSuccess = (categoriesControllerFindByIdResponse200) & {
+  headers: Headers;
+};
+export type categoriesControllerFindByIdResponseError = (categoriesControllerFindByIdResponse401 | categoriesControllerFindByIdResponse403 | categoriesControllerFindByIdResponse404) & {
+  headers: Headers;
+};
+
+export type categoriesControllerFindByIdResponse = (categoriesControllerFindByIdResponseSuccess | categoriesControllerFindByIdResponseError)
+
+export const getCategorysControllerFindByIdUrl = (id: string,) => {
+  return `/api/v1/categories/${id}`
+}
+
+/**
+ * Retorna os detalhes de uma categoria específica pertencente ao usuário (ou qualquer categoria para ADMIN).
+ * @summary Obter detalhes de uma categoria
+ */
+export const categoriesControllerFindById = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<categoriesControllerFindByIdResponse> => {
+
+  return customFetch<categoriesControllerFindByIdResponse>(getCategorysControllerFindByIdUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+export type categoriesControllerUpdateResponse200 = {
+  data: CategoryDto
+  status: 200
+}
+
+export type categoriesControllerUpdateResponse400 = {
+  data: ProblemDetailsDto
+  status: 400
+}
+
+export type categoriesControllerUpdateResponse401 = {
+  data: ProblemDetailsDto
+  status: 401
+}
+
+export type categoriesControllerUpdateResponse403 = {
+  data: ProblemDetailsDto
+  status: 403
+}
+
+export type categoriesControllerUpdateResponse404 = {
+  data: ProblemDetailsDto
+  status: 404
+}
+
+export type categoriesControllerUpdateResponseSuccess = (categoriesControllerUpdateResponse200) & {
+  headers: Headers;
+};
+export type categoriesControllerUpdateResponseError = (categoriesControllerUpdateResponse400 | categoriesControllerUpdateResponse401 | categoriesControllerUpdateResponse403 | categoriesControllerUpdateResponse404) & {
+  headers: Headers;
+};
+
+export type categoriesControllerUpdateResponse = (categoriesControllerUpdateResponseSuccess | categoriesControllerUpdateResponseError)
+
+export const getCategorysControllerUpdateUrl = (id: string,) => {
+
+
+
+
+  return `/api/v1/categories/${id}`
+}
+
+/**
+ * Atualiza os dados ou status de uma categoria respeitando as regras de negócio e ownership.
+ * @summary Atualizar categoria
+ */
+export const categoriesControllerUpdate = async (id: string,
+    updateCategoryDto: UpdateCategoryDto, options?: Parameters<typeof customFetch>[1]): Promise<categoriesControllerUpdateResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Array.isArray(h)) return Object.fromEntries(h);
+    return h;
+  };
+return customFetch<categoriesControllerUpdateResponse>(getCategorysControllerUpdateUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(updateCategoryDto)
+  }
+);}
+
+
+
+export type categoriesControllerRemoveResponse204 = {
+  data: void
+  status: 204
+}
+
+export type categoriesControllerRemoveResponse401 = {
+  data: ProblemDetailsDto
+  status: 401
+}
+
+export type categoriesControllerRemoveResponse403 = {
+  data: ProblemDetailsDto
+  status: 403
+}
+
+export type categoriesControllerRemoveResponse404 = {
+  data: ProblemDetailsDto
+  status: 404
+}
+
+export type categoriesControllerRemoveResponseSuccess = (categoriesControllerRemoveResponse204) & {
+  headers: Headers;
+};
+export type categoriesControllerRemoveResponseError = (categoriesControllerRemoveResponse401 | categoriesControllerRemoveResponse403 | categoriesControllerRemoveResponse404) & {
+  headers: Headers;
+};
+
+export type categoriesControllerRemoveResponse = (categoriesControllerRemoveResponseSuccess | categoriesControllerRemoveResponseError)
+
+export const getCategorysControllerRemoveUrl = (id: string,) => {
+
+
+
+
+  return `/api/v1/categories/${id}`
+}
+
+/**
+ * Realiza a remoção lógica (soft delete) da categoria.
+ * @summary Excluir categoria (remoção lógica)
+ */
+export const categoriesControllerRemove = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<categoriesControllerRemoveResponse> => {
+
+  return customFetch<categoriesControllerRemoveResponse>(getCategorysControllerRemoveUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+  }
+);}

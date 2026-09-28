@@ -7,6 +7,7 @@ import {
   KeyRound,
   LayoutDashboard,
   ListTodo,
+  ListTree,
   Menu,
   Search,
   Shield,
@@ -81,6 +82,12 @@ export function AuthLayout() {
           label: 'Tarefas (CRUD)',
           path: '/tasks',
           icon: <ListTodo className="h-4 w-4 shrink-0" />,
+          badge: 'Ref',
+        },
+        {
+          label: 'Categorias (CRUD)',
+          path: '/categories',
+          icon: <ListTree className="h-4 w-4 shrink-0" />,
           badge: 'Ref',
         },
         ...(isAdmin
